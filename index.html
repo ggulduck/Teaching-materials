@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2학년 수업자료 정리</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <div class="date-display" id="dateDisplay">
+            <!-- 날짜가 여기에 동적으로 표시됩니다 -->
+        </div>
+        <header>
+            <h1 class="main-title">2학년 수업자료 정리</h1>
+        </header>
+
+        <nav class="subject-tabs">
+            <div class="nav-left">
+                <button class="tab-btn active" data-subject="국어">국어</button>
+                <button class="tab-btn" data-subject="수학">수학</button>
+                <button class="tab-btn" data-subject="통합교과">통합교과</button>
+                <button class="favorite-filter-btn" id="favoriteFilterBtn" title="즐겨찾기만 보기">
+                    <span class="star-icon">★</span>
+                    즐겨찾기
+                </button>
+            </div>
+            <div class="nav-right">
+                <div class="search-container">
+                    <input type="text" id="searchInput" placeholder="전체 자료에서 검색..." class="search-input">
+                    <button class="search-clear-btn" id="searchClearBtn" style="display: none;">✕</button>
+                </div>
+            </div>
+        </nav>
+
+        <div class="semester-buttons" id="semesterButtons" style="display: none;">
+            <button class="semester-btn" data-semester="1학기">1학기</button>
+            <button class="semester-btn" data-semester="2학기">2학기</button>
+        </div>
+
+        <div class="topic-buttons" id="topicButtons" style="display: none;">
+            <!-- 1학기 주제들 -->
+            <div class="topic-group" id="firstSemesterTopics" style="display: none;">
+                <button class="topic-btn" data-topic="나">나</button>
+                <button class="topic-btn" data-topic="자연">자연</button>
+                <button class="topic-btn" data-topic="마을">마을</button>
+                <button class="topic-btn" data-topic="세계">세계</button>
+            </div>
+            <!-- 2학기 주제들 -->
+            <div class="topic-group" id="secondSemesterTopics" style="display: none;">
+                <button class="topic-btn" data-topic="계절">계절</button>
+                <button class="topic-btn" data-topic="인물">인물</button>
+                <button class="topic-btn" data-topic="물건">물건</button>
+                <button class="topic-btn" data-topic="기억">기억</button>
+            </div>
+        </div>
+
+        <main class="content-area">
+            <div class="materials-section" id="materialsSection" style="display: none;">
+                <div class="section-header">
+                    <h2 id="currentPath">자료 목록</h2>
+                    <button class="add-btn" id="addMaterialBtn">새 자료 추가</button>
+                </div>
+                
+
+                
+                <div class="sort-options" id="sortOptions">
+                    <span class="sort-label">정렬:</span>
+                    <button class="sort-btn active" data-sort="title-asc">제목 가나다순 (ㄱ~ㅎ)</button>
+                    <button class="sort-btn" data-sort="title-desc">제목 역순 (ㅎ~ㄱ)</button>
+                    <button class="sort-btn" data-sort="date-desc">최신순</button>
+                    <button class="sort-btn" data-sort="date-asc">오래된 순</button>
+                </div>
+                
+                <div class="materials-list" id="materialsList">
+                    <!-- 자료 목록이 여기에 동적으로 추가됩니다 -->
+                </div>
+            </div>
+
+            <div class="welcome-message" id="welcomeMessage">
+                <div class="welcome-content">
+                    <h2>수업자료 정리에 오신 것을 환영합니다!</h2>
+                    <p>위의 교과 탭을 선택하여 원하는 자료를 찾아보세요.</p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- 자료 추가/수정 모달 -->
+    <div class="modal" id="materialModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle">새 자료 추가</h3>
+                <button class="close-btn" id="closeModal">&times;</button>
+            </div>
+            <form id="materialForm">
+                <div class="form-group">
+                    <label for="materialTitle">제목</label>
+                    <input type="text" id="materialTitle" required>
+                </div>
+                <div class="form-group">
+                    <label for="materialDescription">설명</label>
+                    <textarea id="materialDescription" rows="3" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="materialLink">자료 링크 (URL)</label>
+                    <input type="url" id="materialLink" placeholder="https://example.com">
+                </div>
+                <div class="form-group">
+                    <label for="materialFile">첨부파일</label>
+                    <input type="file" id="materialFile" accept=".pdf,.doc,.docx,.ppt,.pptx,.xls,.xlsx,.txt,.jpg,.jpeg,.png,.gif">
+                    <div class="file-info" id="fileInfo"></div>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="cancel-btn" id="cancelBtn">취소</button>
+                    <button type="submit" class="save-btn">저장</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 자료 상세 보기 모달 -->
+    <div class="modal" id="detailModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="detailTitle">자료 상세</h3>
+                <button class="close-btn" id="closeDetailModal">&times;</button>
+            </div>
+            <div class="detail-content" id="detailContent">
+                <!-- 자료 상세 내용이 여기에 표시됩니다 -->
+            </div>
+            <div class="detail-actions">
+                <button class="edit-btn" id="editBtn">수정</button>
+                <button class="delete-btn" id="deleteBtn">삭제</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 메모 입력/수정 모달 -->
+    <div class="modal" id="memoModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="memoTitle">메모 작성</h3>
+                <button class="close-btn" id="closeMemoModal">&times;</button>
+            </div>
+            <form id="memoForm">
+                <div class="form-group">
+                    <label for="memoContent">수업 후기 / 메모</label>
+                    <textarea id="memoContent" rows="6" placeholder="이 자료에 대한 수업 후기나 메모를 작성해주세요..."></textarea>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="cancel-btn" id="cancelMemoBtn">취소</button>
+                    <button type="submit" class="save-btn">저장</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html> 
